@@ -1,9 +1,29 @@
-#include <Arduino.h>
+#include <avr/io.h>
 
-void setup() {
-  // put your setup code here, to run once:
-}
+#define LED_LENGTH 8
 
-void loop() {
-  // put your main code here, to run repeatedly:
+int main()
+{
+  DDRD |= 0XFF;
+  PORTD = 0x01;
+  while (1)
+  { //KIERUNEK D0 -> D7
+    for (uint8_t i = 0; i < (LED_LENGTH -1 ); i++)
+    {
+      PORTD = (PORTD << i);
+      for (uint32_t j = 0x1FFFF; j > 0; j--) 
+      {
+       __asm__ __volatile__("nop");
+      }
+    }
+    // Kierunek D6 -> D1 
+    for (uint8_t i = 1; i < (LED_LENGTH - 1); i++)
+    {
+      PORTD = (PORTD >> 1);
+      for (uint32_t j = 0x1FFFF; j > 0; j--)
+      {
+       __asm__ __volatile__("nop");
+      }
+    }
+  }
 }
