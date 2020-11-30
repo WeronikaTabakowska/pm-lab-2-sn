@@ -12,5 +12,5 @@ Imię i nazwisko studenta: Weronika Tabakowska
 Numer albumu: 72556  
 Grupa studencka: WEL18DE1S1
 
-# Odp na 2.2.1.: poprzez zmiane wartosci zmiennych
+# Odp na 2.2.1.:przez zmiane wartosci zmiennych
 
