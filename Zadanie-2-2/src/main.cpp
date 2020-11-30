@@ -1,29 +1,27 @@
 #include <avr/io.h>
 
-#define LED_LENGTH 8
+uint8_t button;
+bool state = true;
 
-int main()
-{
-  DDRD |= 0XFF;
-  PORTD = 0x01;
-  while (1)
-  { //KIERUNEK D0 -> D7
-    for (uint8_t i = 0; i < (LED_LENGTH -1 ); i++)
-    {
-      PORTD = (PORTD << i);
-      for (uint32_t j = 0x1FFFF; j > 0; j--) 
-      {
-       __asm__ __volatile__("nop");
-      }
+void togglePinD13(bool *state) {
+  PORTB = (*state << 5);
+  *state = !(state);
+}
+
+void delay() {
+  for (uint32_t j = 0x1FFFF; 1 > 0; j--)
+    __asm__ __volatile__("nop");
+}
+
+int main() {
+  DDRB &= !(1 << 0);
+  DDRB |= (1 << 5);
+  while (1) {
+    button = (PINB & (1 << PINB0));
+    if (button == 0) {
+      togglePinD13(&state);
     }
-    // Kierunek D6 -> D1 
-    for (uint8_t i = 1; i < (LED_LENGTH - 1); i++)
-    {
-      PORTD = (PORTD >> 1);
-      for (uint32_t j = 0x1FFFF; j > 0; j--)
-      {
-       __asm__ __volatile__("nop");
-      }
-    }
+    else
+      delay();
   }
 }
